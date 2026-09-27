@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#0a6f86">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>BrightSmile Dental Clinic — Demo Website</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f8fcfd;
+      --surface: #ffffff;
+      --surface-2: #eaf6f8;
+      --surface-3: #d9eef1;
+      --ink: #12343c;
+      --muted: #526f75;
+      --brand: #08758c;
+      --brand-dark: #04586b;
+      --brand-soft: #d9f2f5;
+      --accent: #f2a270;
+      --accent-soft: #fff0e6;
+      --line: #cde1e5;
+      --danger: #b43838;
+      --success: #147457;
+      --shadow: 0 18px 50px rgba(19, 68, 78, .12);
+      --shadow-soft: 0 8px 24px rgba(19, 68, 78, .08);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 10px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #08191d;
+        --surface: #10272c;
+        --surface-2: #15343a;
+        --surface-3: #1b4249;
+        --ink: #effcfd;
+        --muted: #b7cdd1;
+        --brand: #62cfde;
+        --brand-dark: #8de0e9;
+        --brand-soft: #12383f;
+        --accent: #ffb17e;
+        --accent-soft: #4a2c20;
+        --line: #2d4c52;
+        --danger: #ff8e8e;
+        --success: #69d9b2;
+        --shadow: 0 18px 50px rgba(0, 0, 0, .28);
+        --shadow-soft: 0 8px 24px rgba(0, 0, 0, .22);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 94px; }
+    body {
+      margin: 0;
+      font-family: "Manrope", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    body.nav-open { overflow: hidden; }
+    img, svg { display: block; max-width: 100%; }
+    button, input, select, textarea { font: inherit; }
+    a { color: inherit; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2 { font-family: "DM Serif Display", serif; font-weight: 400; letter-spacing: -.02em; }
+    h2 { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.08; margin-bottom: 16px; }
+    h3 { line-height: 1.25; }
+    .wrap { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+    .skip-link { position: fixed; z-index: 200; left: 16px; top: -80px; background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 8px; }
+    .skip-link:focus { top: 12px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--brand-dark); font-size: .78rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+    .eyebrow::before { content: ""; width: 26px; height: 2px; background: var(--accent); }
+    .section-intro { max-width: 650px; color: var(--muted); font-size: 1.03rem; }
+    .section-head { margin-bottom: 38px; }
+    section { padding: 92px 0; }
+
+    .demo-ribbon { background: var(--ink); color: var(--bg); text-align: center; font-size: .82rem; font-weight: 700; padding: 8px 18px; letter-spacing: .015em; }
+    .site-header { position: sticky; top: 0; z-index: 100; background: color-mix(in srgb, var(--bg) 92%, transparent); border-bottom: 1px solid var(--line); backdrop-filter: blur(14px); }
+    .nav { min-height: 74px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .wordmark { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; color: var(--ink); line-height: 1.1; }
+    .wordmark svg { width: 34px; height: 34px; flex: 0 0 auto; color: var(--brand); }
+    .wordmark span { max-width: 190px; }
+    .nav-links { list-style: none; display: flex; align-items: center; gap: 22px; margin: 0; padding: 0; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: .9rem; font-weight: 700; }
+    .nav-links a:hover, .nav-links a:focus-visible { color: var(--brand-dark); }
+    .nav-links .nav-cta { color: #fff; background: var(--brand-dark); border-radius: 99px; padding: 10px 16px; }
+    .menu-toggle { display: none; width: 44px; height: 44px; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--ink); place-items: center; cursor: pointer; }
+    .menu-toggle svg { width: 22px; height: 22px; }
+
+    .hero { position: relative; overflow: clip; padding: 76px 0 92px; }
+    .hero::before { content: ""; position: absolute; width: 520px; height: 520px; border-radius: 50%; background: var(--brand-soft); right: -180px; top: -170px; z-index: -1; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 68px; }
+    .hero h1 { font-size: clamp(3rem, 6vw, 5.6rem); line-height: .98; margin-bottom: 24px; max-width: 760px; }
+    .hero h1 em { color: var(--brand); font-style: normal; }
+    .hero-copy > p { font-size: 1.08rem; color: var(--muted); max-width: 620px; margin-bottom: 30px; }
+    .button-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 12px 19px; border: 1px solid transparent; border-radius: 12px; text-decoration: none; font-weight: 800; cursor: pointer; }
+    .btn svg { width: 19px; height: 19px; }
+    .btn-primary { background: var(--brand-dark); color: #fff; box-shadow: 0 10px 22px rgba(4, 88, 107, .22); }
+    .btn-secondary { background: var(--surface); color: var(--ink); border-color: var(--line); }
+    .btn:hover { transform: translateY(-1px); }
+    .hero-notes { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 30px; color: var(--muted); font-size: .85rem; font-weight: 700; }
+    .hero-note { display: flex; align-items: center; gap: 7px; }
+    .hero-note svg { width: 18px; height: 18px; color: var(--brand); }
+    .hero-visual { min-height: 500px; position: relative; display: grid; place-items: center; }
+    .visual-card { width: min(430px, 100%); aspect-ratio: 4/4.35; background: linear-gradient(150deg, var(--surface), var(--surface-2)); border: 1px solid var(--line); border-radius: 42% 42% 24% 24% / 26% 26% 18% 18%; box-shadow: var(--shadow); display: grid; place-items: center; overflow: hidden; position: relative; }
+    .visual-card::after { content: ""; position: absolute; inset: auto 0 0; height: 28%; background: var(--brand-soft); }
+    .tooth-art { width: 72%; position: relative; z-index: 1; filter: drop-shadow(0 20px 28px rgba(8, 117, 140, .18)); }
+    .float-card { position: absolute; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-soft); padding: 14px 17px; border-radius: 14px; font-weight: 800; font-size: .85rem; display: flex; align-items: center; gap: 10px; }
+    .float-card svg { width: 26px; height: 26px; color: var(--brand); }
+    .float-card.one { left: -14px; top: 76px; }
+    .float-card.two { right: -5px; bottom: 62px; }
+
+    .trust-strip { border-block: 1px solid var(--line); background: var(--surface); }
+    .trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .trust-item { padding: 24px 26px; display: flex; align-items: center; gap: 14px; }
+    .trust-item + .trust-item { border-left: 1px solid var(--line); }
+    .trust-item svg { width: 32px; height: 32px; color: var(--brand); flex: 0 0 auto; }
+    .trust-item strong { display: block; font-size: .96rem; }
+    .trust-item span { display: block; color: var(--muted); font-size: .8rem; }
+
+    #services { background: var(--surface); }
+    .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .service { border-top: 3px solid var(--brand); background: var(--bg); padding: 24px; min-height: 255px; display: flex; flex-direction: column; }
+    .service:nth-child(3n+2) { border-top-color: var(--accent); }
+    .service-icon { width: 46px; height: 46px; display: grid; place-items: center; background: var(--brand-soft); color: var(--brand-dark); border-radius: 50%; margin-bottom: 30px; }
+    .service-icon svg { width: 24px; height: 24px; }
+    .service h3 { margin: 0 0 8px; font-size: 1.02rem; }
+    .service p { color: var(--muted); font-size: .88rem; line-height: 1.55; margin-bottom: 20px; }
+    .price { margin-top: auto; color: var(--brand-dark); font-size: .9rem; font-weight: 800; }
+    .price strong { font-size: 1.18rem; }
+
+    .dentist-grid { display: grid; grid-template-columns: .82fr 1.18fr; gap: 72px; align-items: center; }
+    .profile-portrait { position: relative; background: var(--brand-soft); border-radius: 40px 40px 12px 12px; min-height: 510px; display: grid; place-items: end center; overflow: hidden; }
+    .profile-portrait svg { width: 92%; }
+    .sample-stamp { position: absolute; top: 22px; left: 22px; background: var(--ink); color: var(--bg); padding: 8px 13px; border-radius: 8px; font-size: .74rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; z-index: 2; }
+    .dentist-copy h2 { margin-bottom: 8px; }
+    .credential { color: var(--brand-dark); font-weight: 800; margin-bottom: 24px; }
+    .dentist-copy > p { color: var(--muted); }
+    .detail-list { display: grid; gap: 14px; margin: 28px 0 0; }
+    .detail { display: grid; grid-template-columns: 40px 1fr; gap: 13px; align-items: start; }
+    .detail svg { width: 38px; height: 38px; padding: 9px; background: var(--surface); border: 1px solid var(--line); border-radius: 50%; color: var(--brand); }
+    .detail strong { display: block; font-size: .9rem; }
+    .detail span { display: block; color: var(--muted); font-size: .86rem; margin-top: 2px; }
+
+    #appointment { background: var(--ink); color: #f4ffff; position: relative; overflow: clip; }
+    #appointment::after { content: "+"; position: absolute; right: -20px; top: -98px; font: 400 380px/1 "DM Serif Display", serif; color: rgba(255,255,255,.035); transform: rotate(18deg); pointer-events: none; }
+    .appointment-grid { display: grid; grid-template-columns: .7fr 1.3fr; gap: 70px; position: relative; z-index: 1; }
+    .appointment-copy { padding-top: 28px; }
+    .appointment-copy .eyebrow { color: var(--accent); }
+    .appointment-copy p { color: #bed2d6; }
+    .process { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 18px; }
+    .process li { display: flex; gap: 13px; color: #d9e8ea; font-size: .9rem; }
+    .step { width: 27px; height: 27px; flex: 0 0 auto; display: grid; place-items: center; background: var(--accent); color: #2e211b; border-radius: 50%; font-size: .75rem; font-weight: 800; }
+    .form-shell { background: var(--surface); color: var(--ink); padding: 34px; border-radius: 22px; box-shadow: var(--shadow); }
+    .form-shell h3 { font-size: 1.4rem; margin-bottom: 6px; }
+    .form-note { color: var(--muted); font-size: .82rem; margin-bottom: 26px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .field { display: grid; gap: 7px; }
+    .field.full { grid-column: 1 / -1; }
+    label { font-size: .82rem; font-weight: 800; }
+    input, select, textarea { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 12px 13px; background: var(--bg); color: var(--ink); outline: none; }
+    input:focus, select:focus, textarea:focus { border-color: var(--brand); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent); }
+    textarea { min-height: 100px; resize: vertical; }
+    .hint { color: var(--muted); font-size: .75rem; }
+    .error { min-height: 18px; color: var(--danger); font-size: .75rem; font-weight: 700; }
+    [aria-invalid="true"] { border-color: var(--danger); }
+    .submit-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-top: 4px; }
+    .submit-row small { color: var(--muted); font-size: .72rem; max-width: 230px; }
+    .success-panel { display: none; }
+    .success-panel.active { display: block; }
+    .success-mark { width: 56px; height: 56px; display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--success) 14%, transparent); color: var(--success); margin-bottom: 18px; }
+    .success-mark svg { width: 28px; height: 28px; }
+    .summary-list { margin: 22px 0; border-block: 1px solid var(--line); }
+    .summary-row { display: grid; grid-template-columns: 140px 1fr; gap: 16px; padding: 11px 0; }
+    .summary-row + .summary-row { border-top: 1px solid var(--line); }
+    .summary-row dt { color: var(--muted); font-size: .8rem; font-weight: 700; }
+    .summary-row dd { margin: 0; font-size: .86rem; font-weight: 700; overflow-wrap: anywhere; }
+    .demo-warning { padding: 12px 14px; border-radius: 9px; background: var(--accent-soft); color: var(--ink); font-size: .78rem; }
+
+    .faq-wrap { max-width: 850px; margin: 0 auto; }
+    .faq-wrap .section-head { text-align: center; }
+    .faq-wrap .section-intro { margin-inline: auto; }
+    .faq-list { border-top: 1px solid var(--line); }
+    .faq-item { border-bottom: 1px solid var(--line); }
+    .faq-question { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px; text-align: left; padding: 22px 4px; border: 0; background: transparent; color: var(--ink); cursor: pointer; font-weight: 800; }
+    .faq-question svg { width: 20px; height: 20px; flex: 0 0 auto; color: var(--brand); transition: transform .2s ease; }
+    .faq-question[aria-expanded="true"] svg { transform: rotate(45deg); }
+    .faq-answer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .25s ease; }
+    .faq-answer > div { overflow: hidden; }
+    .faq-answer p { color: var(--muted); font-size: .93rem; padding: 0 44px 22px 4px; margin: 0; }
+    .faq-item.open .faq-answer { grid-template-rows: 1fr; }
+
+    #contact { background: var(--surface-2); }
+    .contact-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 30px; }
+    .contact-card { background: var(--surface); padding: 36px; border-radius: 8px 30px 8px 8px; box-shadow: var(--shadow-soft); }
+    .contact-card h2 { font-size: clamp(2.1rem, 4vw, 3rem); }
+    .contact-list { display: grid; gap: 22px; margin: 30px 0; }
+    .contact-item { display: grid; grid-template-columns: 42px 1fr; gap: 13px; }
+    .contact-item svg { width: 40px; height: 40px; border-radius: 50%; padding: 10px; color: var(--brand-dark); background: var(--brand-soft); }
+    .contact-item strong { display: block; font-size: .86rem; margin-bottom: 3px; }
+    .contact-item span, .contact-item a { color: var(--muted); font-size: .9rem; text-decoration: none; }
+    .hours-card { padding: 36px; border: 1px solid var(--line); background: var(--bg); border-radius: 30px 8px 8px 8px; }
+    .hours-card h3 { font-family: "DM Serif Display", serif; font-size: 1.8rem; font-weight: 400; margin-bottom: 24px; }
+    .hours-row { display: flex; justify-content: space-between; gap: 20px; padding: 15px 0; border-top: 1px solid var(--line); font-size: .9rem; }
+    .hours-row span:last-child { text-align: right; color: var(--muted); font-weight: 700; }
+    .hours-row.closed span:last-child { color: var(--danger); }
+    .placeholder-note { margin-top: 24px; color: var(--muted); font-size: .74rem; }
+
+    footer { background: #061216; color: #dcecef; padding: 32px 0; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .footer-inner strong { display: block; font-size: .88rem; }
+    .footer-inner p { margin: 3px 0 0; color: #91aeb3; font-size: .74rem; }
+    .back-top { text-decoration: none; font-size: .78rem; font-weight: 800; color: #dcecef; border-bottom: 1px solid #54747a; padding-bottom: 2px; }
+
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+
+    @media (max-width: 980px) {
+      .menu-toggle { display: grid; }
+      .nav-links { position: fixed; inset: 107px 20px auto; display: none; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); border-radius: 18px; padding: 14px; flex-direction: column; align-items: stretch; gap: 2px; }
+      .nav-links.open { display: flex; }
+      .nav-links a { display: block; padding: 12px 14px; }
+      .nav-links .nav-cta { text-align: center; margin-top: 6px; }
+      .hero-grid, .dentist-grid, .appointment-grid { grid-template-columns: 1fr; }
+      .hero-grid { gap: 34px; }
+      .hero-visual { min-height: 440px; }
+      .visual-card { max-width: 390px; }
+      .dentist-grid { gap: 42px; }
+      .profile-portrait { max-width: 560px; width: 100%; margin: 0 auto; }
+      .appointment-grid { gap: 35px; }
+      .appointment-copy { padding-top: 0; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 700px) {
+      .wrap { width: min(100% - 28px, 1160px); }
+      section { padding: 68px 0; }
+      .demo-ribbon { font-size: .72rem; padding: 7px 12px; }
+      .nav { min-height: 66px; }
+      .nav-links { inset: 96px 14px auto; }
+      .wordmark span { font-size: .86rem; max-width: 150px; }
+      .wordmark svg { width: 30px; height: 30px; }
+      .hero { padding: 54px 0 70px; }
+      .hero h1 { font-size: clamp(2.75rem, 14vw, 4.2rem); }
+      .hero-copy > p { font-size: 1rem; }
+      .button-row .btn { width: 100%; }
+      .hero-notes { display: grid; gap: 10px; }
+      .hero-visual { min-height: 350px; }
+      .visual-card { width: 86%; border-radius: 38% 38% 22% 22% / 23% 23% 15% 15%; }
+      .float-card { padding: 10px 12px; font-size: .7rem; }
+      .float-card.one { left: 0; top: 38px; }
+      .float-card.two { right: 0; bottom: 25px; }
+      .float-card svg { width: 22px; height: 22px; }
+      .trust-grid { grid-template-columns: 1fr; padding: 8px 0; }
+      .trust-item { padding: 15px 6px; }
+      .trust-item + .trust-item { border-left: 0; border-top: 1px solid var(--line); }
+      .services-grid { grid-template-columns: 1fr; }
+      .service { min-height: auto; }
+      .service-icon { margin-bottom: 22px; }
+      .profile-portrait { min-height: 400px; border-radius: 28px 28px 10px 10px; }
+      .form-shell { padding: 24px 18px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .submit-row { align-items: stretch; flex-direction: column-reverse; }
+      .summary-row { grid-template-columns: 1fr; gap: 2px; }
+      .faq-question { padding: 19px 0; }
+      .faq-answer p { padding-inline: 0 24px; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .contact-card, .hours-card { padding: 26px 20px; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="demo-ribbon">Portfolio demo — BrightSmile is a fictional clinic and no appointment is actually submitted.</div>
+
+  <header class="site-header" id="top">
+    <nav class="nav wrap" aria-label="Primary navigation">
+      <a class="wordmark" href="#home" aria-label="BrightSmile Dental Clinic home">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 7c-8 3-11 12-8 23 2 7 4 24 11 27 6 3 5-19 9-19s3 22 9 19c7-3 9-20 11-27 3-11 0-20-8-23-5-2-8 2-12 2s-7-4-12-2Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><path d="M23 20c4 3 14 3 18 0" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+        <span>BrightSmile Dental Clinic</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <svg class="menu-open-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#dentist">Dentist</a></li>
+        <li><a href="#faqs">FAQs</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a class="nav-cta" href="#appointment">Book appointment</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="home">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Gentle care in Lahore</span>
+          <h1>Modern dentistry, with a <em>lighter touch.</em></h1>
+          <p>Thoughtful dental care for adults and children, explained clearly and delivered with comfort in mind.</p>
+          <div class="button-row">
+            <a class="btn btn-primary" href="#appointment">Book Appointment <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+            <a class="btn btn-secondary" href="https://wa.me/923000000000" target="_blank" rel="noopener">WhatsApp Us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.5 11.7a8.5 8.5 0 0 1-12.6 7.5L3 20.5l1.3-4.7A8.5 8.5 0 1 1 20.5 11.7Z"/><path d="M8.3 8.1c.3 3.7 3.5 6.8 7.3 7.3"/></svg></a>
+          </div>
+          <div class="hero-notes">
+            <span class="hero-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>Clear treatment guidance</span>
+            <span class="hero-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>Adults & children welcome</span>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="Friendly tooth illustration">
+          <div class="visual-card">
+            <svg class="tooth-art" viewBox="0 0 360 390" role="img" aria-label="Smiling tooth with a small sparkle">
+              <path d="M103 44C53 58 31 112 48 177c13 50 28 153 72 170 36 14 31-119 60-119s24 133 60 119c44-17 59-120 72-170 17-65-5-119-55-133-31-9-51 18-77 18s-46-27-77-18Z" fill="#fff" stroke="#08758c" stroke-width="10" stroke-linejoin="round"/>
+              <path d="M124 148v6M236 148v6" stroke="#12343c" stroke-width="11" stroke-linecap="round"/>
+              <path d="M137 188c22 28 64 28 86 0" fill="none" stroke="#12343c" stroke-width="9" stroke-linecap="round"/>
+              <path d="m300 53 7 17 17 7-17 7-7 17-7-17-17-7 17-7 7-17Z" fill="#f2a270"/>
+              <path d="m78 23 4 10 10 4-10 4-4 10-4-10-10-4 10-4 4-10Z" fill="#62cfde"/>
+            </svg>
+          </div>
+          <div class="float-card one"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Comfort-first visits</div>
+          <div class="float-card two"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Mon–Sat, 10 AM–8 PM</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="trust-strip" aria-label="Clinic highlights">
+      <div class="wrap trust-grid">
+        <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 5 6v5c0 4.6 2.7 8.6 7 10 4.3-1.4 7-5.4 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg><div><strong>Hygiene-minded care</strong><span>Clean, considered treatment flow</span></div></div>
+        <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><strong>Convenient hours</strong><span>Six days a week</span></div></div>
+        <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19v-7a8 8 0 0 1 16 0v7"/><path d="M8 19v-5m8 5v-5M6 19h12"/></svg><div><strong>Family-friendly</strong><span>Care for adults and children</span></div></div>
+      </div>
+    </div>
+
+    <section id="services">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Treatment menu</span>
+          <h2>Dental care, clearly priced.</h2>
+          <p class="section-intro">From routine prevention to restorative treatment, each visit begins with a clear conversation about what you need.</p>
+        </div>
+        <div class="services-grid">
+          <article class="service"><div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3C5 4 4 8 5 12c1 3 2 9 4 9 2 0 1-7 3-7s1 7 3 7c2 0 3-6 4-9 1-4 0-8-3-9-2-1-3 1-4 1s-2-2-4-1Z"/><path d="M9 9h6"/></svg></div><h3>General Checkup & Consultation</h3><p>A full oral assessment with practical next-step guidance.</p><div class="price"><strong>Rs 1,500</strong></div></article>
+          <article class="service"><div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 5h8M6 9h6M4 3v8a2 2 0 0 0 2 2h5l4 4v-4h2a2 2 0 0 0 2-2V8"/><path d="m17 3 .8 1.7L20 5.5l-2.2.8L17 8l-.8-1.7-2.2-.8 2.2-.8L17 3Z"/></svg></div><h3>Scaling & Polishing</h3><p>Professional removal of plaque and stains for a fresher smile.</p><div class="price"><strong>Rs 4,000</strong></div></article>
+          <article class="service"><div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 5c-2 1-3 4-2 7 1 3 2 8 4 8s1-6 3-6 1 6 3 6 3-5 4-8c1-3 0-6-2-7-2-1-3 1-5 1S9 4 7 5Z"/><path d="m18 2 1 2 2 1-2 1-1 2-1-2-2-1 2-1 1-2Z"/></svg></div><h3>Teeth Whitening</h3><p>Clinic-based brightening tailored to your starting shade.</p><div class="price"><strong>Rs 15,000</strong></div></article>
+          <article class="service"><div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3C5 4 4 8 5 12c1 3 2 9 4 9 2 0 1-7 3-7s1 7 3 7c2 0 3-6 4-9 1-4 0-8-3-9-2-1-3 1-4 1s-2-2-4-1Z"/><path d="M12 6v8"/></svg></div><h3>Root Canal Treatment</h3><p>Care for infected teeth, focused on relief and preservation.</p><div class="price">From <strong>Rs 12,000</strong></div></article>
+          <article class="service"><div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3C5 4 4 8 5 12c1 3 2 9 4 9 2 0 1-7 3-7s1 7 3 7c2 0 3-6 4-9 1-4 0-8-3-9-2-1-3 1-4 1s-2-2-4-1Z"/><path d="M9 9h6v4H9z"/></svg></div><h3>Dental Filling</h3><p>Tooth-coloured restoration for cavities and minor damage.</p><div class="price">From <strong>Rs 3,500</strong></div></article>
+          <article class="service"><div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 8c4-2 10-2 14 0M5 16c4 2 10 2 14 0"/><path d="M7 6v12m5-13v14m5-13v12M5 12h14"/></svg></div><h3>Braces Consultation</h3><p>An orthodontic assessment and discussion of suitable options.</p><div class="price"><strong>Rs 2,000</strong></div></article>
+          <article class="service"><div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3C5 4 4 8 5 12c1 3 2 9 4 9 2 0 1-7 3-7s1 7 3 7c2 0 3-6 4-9 1-4 0-8-3-9-2-1-3 1-4 1s-2-2-4-1Z"/><path d="m8 15 8-8"/></svg></div><h3>Tooth Extraction</h3><p>Careful removal when a tooth cannot be predictably restored.</p><div class="price">From <strong>Rs 5,000</strong></div></article>
+          <article class="service"><div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2"/><path d="M3 20c0-4 2-6 6-6s6 2 6 6m0-5c3 0 5 2 5 5"/></svg></div><h3>Kids Dentistry Checkup</h3><p>A calm, friendly first look at your child’s developing smile.</p><div class="price"><strong>Rs 1,200</strong></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="dentist">
+      <div class="wrap dentist-grid">
+        <div class="profile-portrait">
+          <span class="sample-stamp">Demo profile</span>
+          <svg viewBox="0 0 520 560" role="img" aria-label="Stylised illustration representing the fictional dentist profile">
+            <circle cx="260" cy="196" r="100" fill="#f2b994"/>
+            <path d="M154 188c2-88 50-133 108-133 67 0 111 55 105 153-24-37-52-64-103-71-28 26-61 42-110 51Z" fill="#183d45"/>
+            <path d="M174 148c-34 20-46 72-19 105 9-42 17-69 44-92m147-12c34 20 45 72 18 105-8-42-16-70-43-93" fill="#183d45"/>
+            <path d="M220 201h-35v-21h35m79 21h35v-21h-35m-79 10h79" fill="none" stroke="#08758c" stroke-width="8"/>
+            <circle cx="203" cy="191" r="4" fill="#183d45"/><circle cx="317" cy="191" r="4" fill="#183d45"/>
+            <path d="M230 240c19 15 42 15 61 0" fill="none" stroke="#9f5c49" stroke-width="6" stroke-linecap="round"/>
+            <path d="M87 560c5-171 68-245 173-245s168 74 173 245" fill="#fff" stroke="#b9dde2" stroke-width="7"/>
+            <path d="m200 324 60 63 60-63" fill="#d9f2f5"/>
+            <path d="M260 386v174" stroke="#b9dde2" stroke-width="6"/>
+            <path d="M155 373v57c0 30 24 54 54 54h1" fill="none" stroke="#08758c" stroke-width="7"/>
+            <path d="M365 373v57c0 30-24 54-54 54h-1" fill="none" stroke="#08758c" stroke-width="7"/>
+            <circle cx="260" cy="471" r="23" fill="#fff" stroke="#08758c" stroke-width="7"/>
+          </svg>
+        </div>
+        <div class="dentist-copy">
+          <span class="eyebrow">Meet the dentist</span>
+          <h2>Dr. Ayesha Khan, BDS</h2>
+          <p class="credential">Fictional sample profile for this demo website</p>
+          <p>Dr. Ayesha’s sample profile represents a dentist who values calm visits, clear explanations and treatment planning shaped around each patient’s comfort.</p>
+          <p>Her fictional experience summary includes eight years of general family dentistry, preventive care and restorative procedures in clinical settings.</p>
+          <div class="detail-list">
+            <div class="detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16v13H4zM8 7V4h8v3M8 12h8"/></svg><div><strong>Qualifications</strong><span>BDS — sample qualification shown for demonstration</span></div></div>
+            <div class="detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><strong>Experience</strong><span>Eight years in general family dentistry — fictional</span></div></div>
+            <div class="detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 6.5-7 11-7 11Z"/></svg><div><strong>Special interests</strong><span>Preventive dentistry, gentle care and smile restoration</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="appointment">
+      <div class="wrap appointment-grid">
+        <div class="appointment-copy">
+          <span class="eyebrow">Request a visit</span>
+          <h2>Choose a time that works for you.</h2>
+          <p>Use this demo form to preview a polished appointment journey. It validates your details and shows a confirmation summary on this page.</p>
+          <ol class="process">
+            <li><span class="step">1</span><span>Select a service and preferred slot.</span></li>
+            <li><span class="step">2</span><span>Review the summary shown after submission.</span></li>
+            <li><span class="step">3</span><span>In a real clinic site, the team would confirm your visit.</span></li>
+          </ol>
+        </div>
+        <div class="form-shell">
+          <form id="appointment-form" novalidate>
+            <h3>Appointment details</h3>
+            <p class="form-note">All fields marked * are required. This is a demo; details are not sent or stored.</p>
+            <div class="form-grid">
+              <div class="field"><label for="name">Full name *</label><input id="name" name="name" type="text" autocomplete="name" required placeholder="Your full name"><span class="error" id="name-error"></span></div>
+              <div class="field"><label for="phone">Phone number *</label><input id="phone" name="phone" type="tel" autocomplete="tel" required inputmode="tel" placeholder="03XX XXXXXXX"><span class="hint">Use 03XX XXXXXXX or +92 3XX XXXXXXX</span><span class="error" id="phone-error"></span></div>
+              <div class="field full"><label for="service">Service *</label><select id="service" name="service" required><option value="">Choose a service</option><option>General Checkup & Consultation</option><option>Scaling & Polishing</option><option>Teeth Whitening</option><option>Root Canal Treatment</option><option>Dental Filling</option><option>Braces Consultation</option><option>Tooth Extraction</option><option>Kids Dentistry Checkup</option></select><span class="error" id="service-error"></span></div>
+              <div class="field"><label for="date">Preferred date *</label><input id="date" name="date" type="date" required><span class="error" id="date-error"></span></div>
+              <div class="field"><label for="time">Preferred time *</label><select id="time" name="time" required><option value="">Choose a time slot</option><option>10:00 AM – 12:00 PM</option><option>12:00 PM – 2:00 PM</option><option>2:00 PM – 4:00 PM</option><option>4:00 PM – 6:00 PM</option><option>6:00 PM – 8:00 PM</option></select><span class="error" id="time-error"></span></div>
+              <div class="field full"><label for="notes">Notes <span class="hint">(optional)</span></label><textarea id="notes" name="notes" maxlength="500" placeholder="Tell us briefly what you would like help with"></textarea><span class="error" id="notes-error"></span></div>
+              <div class="field full submit-row"><small>No data leaves this page. This interaction is for demonstration only.</small><button class="btn btn-primary" type="submit">Review request</button></div>
+            </div>
+          </form>
+          <section class="success-panel" id="success-panel" aria-live="polite" aria-labelledby="success-title">
+            <div class="success-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m5 12 4 4L19 6"/></svg></div>
+            <h3 id="success-title">Your demo request is ready.</h3>
+            <p class="form-note">Here is the information entered in this preview:</p>
+            <dl class="summary-list" id="summary-list"></dl>
+            <p class="demo-warning"><strong>Demo only:</strong> no appointment has been booked and these details were not sent to a clinic.</p>
+            <button class="btn btn-secondary" type="button" id="edit-request">Edit details</button>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section id="faqs">
+      <div class="wrap faq-wrap">
+        <div class="section-head"><span class="eyebrow">Common questions</span><h2>Before your visit.</h2><p class="section-intro">Simple answers to help you know what to expect from routine dental care.</p></div>
+        <div class="faq-list">
+          <article class="faq-item"><button class="faq-question" aria-expanded="false"><span>Do teeth cleanings hurt?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button><div class="faq-answer"><div><p>Most routine cleanings cause little or no discomfort. If your gums are sensitive or there is heavier buildup, tell the dentist so the visit can be paced more gently.</p></div></div></article>
+          <article class="faq-item"><button class="faq-question" aria-expanded="false"><span>How often should I visit?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button><div class="faq-answer"><div><p>Many people benefit from a checkup every six months, but the right interval depends on your oral health, gum condition and treatment history.</p></div></div></article>
+          <article class="faq-item"><button class="faq-question" aria-expanded="false"><span>Do you treat children?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button><div class="faq-answer"><div><p>Yes. The sample service list includes children’s checkups, with a calm introduction to the dental chair and age-appropriate guidance for families.</p></div></div></article>
+          <article class="faq-item"><button class="faq-question" aria-expanded="false"><span>What are your charges for whitening?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button><div class="faq-answer"><div><p>The demo price for clinic-based teeth whitening is Rs 15,000. A consultation helps assess suitability and set realistic expectations for your shade.</p></div></div></article>
+          <article class="faq-item"><button class="faq-question" aria-expanded="false"><span>Do I need an appointment, or is walk-in okay?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button><div class="faq-answer"><div><p>Appointments are recommended so enough time can be reserved for you. A real clinic may accept walk-ins when the schedule allows, but calling first is best.</p></div></div></article>
+          <article class="faq-item"><button class="faq-question" aria-expanded="false"><span>Where are you located?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button><div class="faq-answer"><div><p>This fictional demo uses the sample address: 3rd Floor, Al-Hafeez Plaza, Main Boulevard Gulberg, Lahore. It is not a real clinic location.</p></div></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap contact-grid">
+        <div class="contact-card">
+          <span class="eyebrow">Contact</span>
+          <h2>Let’s plan your visit.</h2>
+          <div class="contact-list">
+            <div class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><div><strong>Demo address</strong><span>3rd Floor, Al-Hafeez Plaza, Main Boulevard Gulberg, Lahore (demo address)</span></div></div>
+            <div class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h3l2 5-2 2c1.5 3 3.5 4.5 6 5l2-2 4 2v3c0 2-2 3-4 3C10 20 4 14 3 6c0-2 1-3 4-3Z"/></svg><div><strong>Placeholder phone</strong><a href="tel:+923000000000">+92 300 0000000</a></div></div>
+          </div>
+          <div class="button-row"><a class="btn btn-primary" href="https://wa.me/923000000000" target="_blank" rel="noopener">WhatsApp Us</a><a class="btn btn-secondary" href="#appointment">Book Appointment</a></div>
+        </div>
+        <aside class="hours-card" aria-label="Clinic hours">
+          <h3>Clinic hours</h3>
+          <div class="hours-row"><span>Monday–Saturday</span><span>10:00 AM – 8:00 PM</span></div>
+          <div class="hours-row closed"><span>Sunday</span><span>Closed</span></div>
+          <p class="placeholder-note">Hours, phone number and address are sample details for this fictional demonstration.</p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div><strong>Demo website crafted by LumenMirage Studio</strong><p>BrightSmile Dental Clinic is a fictional demo business. No real dental services or appointments are offered.</p></div>
+      <a class="back-top" href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var menuButton = document.querySelector('.menu-toggle');
+      var navLinks = document.getElementById('nav-links');
+      menuButton.addEventListener('click', function () {
+        var open = navLinks.classList.toggle('open');
+        menuButton.setAttribute('aria-expanded', String(open));
+        menuButton.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+        document.body.classList.toggle('nav-open', open);
+      });
+      navLinks.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          navLinks.classList.remove('open');
+          menuButton.setAttribute('aria-expanded', 'false');
+          menuButton.setAttribute('aria-label', 'Open navigation menu');
+          document.body.classList.remove('nav-open');
+        });
+      });
+      window.addEventListener('resize', function () {
+        if (window.innerWidth > 980) {
+          navLinks.classList.remove('open');
+          menuButton.setAttribute('aria-expanded', 'false');
+          document.body.classList.remove('nav-open');
+        }
+      });
+
+      document.querySelectorAll('.faq-question').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var item = button.closest('.faq-item');
+          var isOpen = item.classList.toggle('open');
+          button.setAttribute('aria-expanded', String(isOpen));
+        });
+      });
+
+      var form = document.getElementById('appointment-form');
+      var successPanel = document.getElementById('success-panel');
+      var dateInput = document.getElementById('date');
+      var editButton = document.getElementById('edit-request');
+
+      function todayLocal() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = String(now.getMonth() + 1).padStart(2, '0');
+        var day = String(now.getDate()).padStart(2, '0');
+        return year + '-' + month + '-' + day;
+      }
+      dateInput.min = todayLocal();
+
+      function setError(id, message) {
+        var input = document.getElementById(id);
+        document.getElementById(id + '-error').textContent = message;
+        input.setAttribute('aria-invalid', message ? 'true' : 'false');
+        if (message) input.setAttribute('aria-describedby', id + '-error');
+        else input.removeAttribute('aria-describedby');
+      }
+
+      function formatDate(value) {
+        var parts = value.split('-');
+        if (parts.length !== 3) return value;
+        var parsed = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        return new Intl.DateTimeFormat('en-PK', { day: 'numeric', month: 'long', year: 'numeric' }).format(parsed);
+      }
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var values = {
+          name: document.getElementById('name').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          service: document.getElementById('service').value,
+          date: dateInput.value,
+          time: document.getElementById('time').value,
+          notes: document.getElementById('notes').value.trim()
+        };
+        var valid = true;
+        var phonePattern = /^(?:\+92\s?3\d{2}|03\d{2})[\s-]?\d{7}$/;
+        setError('name', values.name.length >= 2 ? '' : 'Please enter your full name.');
+        if (values.name.length < 2) valid = false;
+        setError('phone', phonePattern.test(values.phone) ? '' : 'Enter a valid Pakistan mobile number.');
+        if (!phonePattern.test(values.phone)) valid = false;
+        setError('service', values.service ? '' : 'Please choose a service.');
+        if (!values.service) valid = false;
+        var dateValid = Boolean(values.date) && values.date >= todayLocal();
+        setError('date', dateValid ? '' : 'Choose today or a future date.');
+        if (!dateValid) valid = false;
+        setError('time', values.time ? '' : 'Please choose a time slot.');
+        if (!values.time) valid = false;
+        setError('notes', '');
+
+        if (!valid) {
+          var firstInvalid = form.querySelector('[aria-invalid="true"]');
+          if (firstInvalid) firstInvalid.focus();
+          return;
+        }
+
+        var rows = [
+          ['Name', values.name],
+          ['Phone', values.phone],
+          ['Service', values.service],
+          ['Preferred date', formatDate(values.date)],
+          ['Preferred time', values.time]
+        ];
+        if (values.notes) rows.push(['Notes', values.notes]);
+        var list = document.getElementById('summary-list');
+        list.innerHTML = '';
+        rows.forEach(function (row) {
+          var wrapper = document.createElement('div');
+          wrapper.className = 'summary-row';
+          var dt = document.createElement('dt');
+          var dd = document.createElement('dd');
+          dt.textContent = row[0];
+          dd.textContent = row[1];
+          wrapper.appendChild(dt);
+          wrapper.appendChild(dd);
+          list.appendChild(wrapper);
+        });
+        form.hidden = true;
+        successPanel.classList.add('active');
+        successPanel.focus();
+        successPanel.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+      });
+
+      editButton.addEventListener('click', function () {
+        successPanel.classList.remove('active');
+        form.hidden = false;
+        document.getElementById('name').focus();
+      });
+    }());
+  </script>
+</body>
+</html>
